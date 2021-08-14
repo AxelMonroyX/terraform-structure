@@ -1,0 +1,25 @@
+---
+- name: "Setup Terraform Env"
+  hosts: localhost
+  vars_files:
+    - variables.yml
+  connection: local
+  tasks:
+    - name: Creates directory
+      file:
+        path: "{{ ssh_key_path }}"
+        state: directory
+        recurse: true
+        mode: 0775
+
+    - name: Generate SSH key "{{ ssh_key_filename }}"
+      openssh_keypair:
+        path: "{{ ssh_key_path }}/{{ ssh_key_filename }}"
+        type: rsa
+        size: 4096
+        state: present
+        force: true
+    - name: Set 400 to "{{ ssh_key_filename }}"
+      file:
+        path: "{{ ssh_key_path }}/{{ ssh_key_filename }}"
+        mode: 0400

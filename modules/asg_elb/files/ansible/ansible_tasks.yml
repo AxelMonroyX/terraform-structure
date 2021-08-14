@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        update_cache: yes
+        state: present
+    - name: Install jq
+      apt:
+        name: jq
+        update_cache: yes
+        state: present
+    - community.general.ufw:
+        rule: allow
+        name: OpenSSH
+    - community.general.ufw:
+        rule: allow
+        name: 'Nginx HTTP'
+    - name: Enable UFW
+      community.general.ufw:
+        state: enabled
+    - name: Get public ip address
+      uri:
+        method: GET
+        url: http://169.254.169.254/latest/dynamic/instance-identity/document
+        return_content: yes
+      register: my_instance
+    - debug:
+        msg:
+          - "{{ my_instance.content[:-1] }}"
