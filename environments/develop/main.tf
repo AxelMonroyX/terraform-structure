@@ -30,8 +30,8 @@ resource "aws_key_pair" "develop" {
   public_key = file("./files/ssh_keys/develop.pub")
 }
 
-module "asg_example_elb" {
-  source               = "../../modules/asg_elb"
+module "nginx_instance_info" {
+  source               = "../../modules/nginx_instance_info"
   environment          = var.environment
   instance_type        = "t2.micro"
   size                 = 1

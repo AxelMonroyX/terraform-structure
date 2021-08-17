@@ -9,7 +9,7 @@ data "template_cloudinit_config" "user_data" {
   }
 }
 
-resource "aws_autoscaling_group" "nginx_example" {
+resource "aws_autoscaling_group" "nginx_instance_info" {
   name                      = "${var.environment}-nginx-asg"
   desired_capacity          = var.size
   min_size                  = var.size
@@ -17,8 +17,8 @@ resource "aws_autoscaling_group" "nginx_example" {
   health_check_grace_period = "60"
   health_check_type         = "EC2"
   force_delete              = false
-  launch_configuration      = aws_launch_configuration.nginx_example.name
-  load_balancers            = ["${aws_elb.nginx_example_elb.name}"]
+  launch_configuration      = aws_launch_configuration.nginx_instance_info.name
+  load_balancers            = ["${aws_elb.nginx_instance_info_elb.name}"]
   vpc_zone_identifier       = var.vpc_subnets
 
   tag {
@@ -34,7 +34,7 @@ resource "aws_autoscaling_group" "nginx_example" {
   }
 }
 
-resource "aws_launch_configuration" "nginx_example" {
+resource "aws_launch_configuration" "nginx_instance_info" {
   name_prefix                 = "${var.environment}-nginx-lc"
   image_id                    = var.ami
   instance_type               = var.instance_type
@@ -44,8 +44,8 @@ resource "aws_launch_configuration" "nginx_example" {
   ebs_optimized               = false
 
   security_groups = [
-    "${aws_security_group.nginx_example.id}",
-    "${aws_security_group.nginx_example_allow_elb.id}",
+    "${aws_security_group.nginx_instance_info.id}",
+    "${aws_security_group.nginx_instance_info_allow_elb.id}",
   ]
 
   lifecycle {
@@ -53,7 +53,7 @@ resource "aws_launch_configuration" "nginx_example" {
   }
 }
 
-resource "aws_security_group" "nginx_example" {
+resource "aws_security_group" "nginx_instance_info" {
   name        = "${var.environment}-nginx-allow-ssh-sg"
   vpc_id      = var.vpc_id
   description = "SSH inbound only and egress"
@@ -72,7 +72,7 @@ resource "aws_security_group" "nginx_example" {
   }
 }
 
-resource "aws_security_group" "nginx_example_allow_elb" {
+resource "aws_security_group" "nginx_instance_info_allow_elb" {
   name        = "${var.environment}-nginx-allow-elb-sg"
   description = "Allow connection from elb"
   vpc_id      = var.vpc_id
@@ -111,11 +111,11 @@ resource "aws_security_group" "nginx_example_allow_elb" {
   }
 }
 
-resource "aws_elb" "nginx_example_elb" {
+resource "aws_elb" "nginx_instance_info_elb" {
   name                      = "${var.environment}-nginx-lb"
   cross_zone_load_balancing = true
   internal                  = false
-  security_groups           = ["${aws_security_group.nginx_example_allow_elb.id}"]
+  security_groups           = ["${aws_security_group.nginx_instance_info_allow_elb.id}"]
   subnets                   = var.vpc_elb_subnets
 
   listener {
