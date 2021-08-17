@@ -15,8 +15,8 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | amis | ../../modules/amis | n/a |
-| asg\_example\_elb | ../../modules/asg_elb | n/a |
 | nat | ../../modules/nat | n/a |
+| nginx\_instance\_info | ../../modules/nginx_instance_info | n/a |
 | vpc | ../../modules/aws_vpc | n/a |
 
 ## Resources

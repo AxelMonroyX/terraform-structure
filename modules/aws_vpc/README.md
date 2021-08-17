@@ -28,7 +28,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | private\_cidrs | CIDR for the Private Subnet | `list(any)` | ```[ "10.0.3.0/24", "10.0.4.0/24" ]``` | no |
 | public\_cidrs | CIDR for the Public Subnet | `list(any)` | ```[ "10.0.1.0/24", "10.0.2.0/24" ]``` | no |
-| region | n/a | `string` | `"us-east-1"` | no |
+| region | Region to deploy infraestructure | `string` | `"us-east-1"` | no |
 | vpc\_cidr | CIDR for the whole VPC | `string` | `"10.0.0.0/16"` | no |
 
 ## Outputs
